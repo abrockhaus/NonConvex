@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NonConvexWebsite.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace NonConvexWebsite
 {
@@ -29,6 +30,7 @@ namespace NonConvexWebsite
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
