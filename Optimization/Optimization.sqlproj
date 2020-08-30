@@ -62,11 +62,17 @@
     <Build Include="Arbitrage.sql" />
     <Build Include="Arbitrage\Item.sql" />
     <Build Include="SeqMain.sql" />
+    <Build Include="Arbitrage\PriceSource.sql" />
+    <Build Include="Arbitrage\CurveValue.sql" />
+    <Build Include="Arbitrage\Curve.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Optimization.dev.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Optimization.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment.ManageReferenceData.sql" />
   </ItemGroup>
 </Project>
