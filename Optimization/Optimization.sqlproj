@@ -65,6 +65,7 @@
     <Build Include="Arbitrage\PriceSource.sql" />
     <Build Include="Arbitrage\CurveValue.sql" />
     <Build Include="Arbitrage\Curve.sql" />
+    <Build Include="Arbitrage\ItemPriceCurve.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Optimization.dev.publish.xml" />

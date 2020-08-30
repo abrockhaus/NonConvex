@@ -4,6 +4,5 @@
 	[CurveID] BIGINT, 
     [Timepoint] DATETIMEOFFSET NOT NULL, 
     [Value] FLOAT NOT NULL, 
-    [Unit] NVARCHAR(10) NOT NULL, 
     CONSTRAINT [FK_CurveValue_Curve] FOREIGN KEY ([CurveID]) REFERENCES [Arbitrage].[Curve]([ID])
 )
