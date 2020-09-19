@@ -28,8 +28,10 @@ namespace NonConvexWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddServerSideBlazor().AddCircuitOptions(o => o.DetailedErrors = true);
+            //services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<CustomHttpClient>();
+            services.AddSingleton<AppSettingsService>();
             services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlDbContext")));
         }
 
@@ -55,6 +57,7 @@ namespace NonConvexWebsite
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
+                endpoints.MapControllers();
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

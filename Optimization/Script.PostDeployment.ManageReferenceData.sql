@@ -13,7 +13,8 @@ Vorlage für ein Skript nach der Bereitstellung
 --Price Sources
 ;with s as 
 (
-    select 1 ID, 'Some Webshop' as Label 
+    select 1 ID, 'Some Webshop' Label union all 
+	select 3 ID, 'Local Store' Label
 ) 
 merge Arbitrage.PriceSource t using s on t.ID = s.ID 
 when not matched by target then 
@@ -25,8 +26,9 @@ when not matched by source then delete;
 --Curves
 ;with s as 
 (
-    select 1 ID, 'EURCHF' Label, 'FX' Unit union all 
-	select 2 ID, 'DJI Mavic Air 2 Drone mit einer 4K Videokamera' Label, 'Item' Unit
+    select 1 ID, 'EUR/CHF' Label, 'EUR/CHF' Unit union all 
+	select 2 ID, 'DJI Mavic Air 2 Drone mit einer 4K Videokamera' Label, 'EUR/Item' Unit union all 
+	select 4 ID, 'DJI Mavic Air 2 Drone mit einer 4K Videokamera' Label, 'EUR/Item' Unit 
 ) 
 merge Arbitrage.Curve t using s on t.ID = s.ID 
 when not matched by target then 
@@ -207,7 +209,18 @@ when not matched by source then delete;
 	select 1 CurveID, '2020-08-25' Timepoint, 1.0752 Value union all
 	select 1 CurveID, '2020-08-26' Timepoint, 1.0738 Value union all
 	select 1 CurveID, '2020-08-27' Timepoint, 1.0750 Value union all
-	select 1 CurveID, '2020-08-28' Timepoint, 1.0758 Value 
+	select 1 CurveID, '2020-08-28' Timepoint, 1.0758 Value union all 
+	select 1 CurveID, '2020-08-31' Timepoint, 1.0774 Value union all
+	select 1 CurveID, '2020-09-01' Timepoint, 1.0865 Value union all
+	select 1 CurveID, '2020-09-02' Timepoint, 1.0799 Value union all
+	select 1 CurveID, '2020-09-03' Timepoint, 1.0776 Value union all
+	select 1 CurveID, '2020-09-04' Timepoint, 1.0793 Value union all
+	select 1 CurveID, '2020-09-07' Timepoint, 1.0809 Value union all
+	select 1 CurveID, '2020-09-08' Timepoint, 1.0820 Value union all
+	select 1 CurveID, '2020-09-09' Timepoint, 1.0806 Value union all
+	select 1 CurveID, '2020-09-10' Timepoint, 1.0766 Value union all
+	select 1 CurveID, '2020-09-11' Timepoint, 1.0777 Value
+
 ), t as 
 (
 	select * from Arbitrage.CurveValue where CurveID = 1 
@@ -232,16 +245,26 @@ when not matched by source then delete;
 			when Timepoint >= '08 May 2020' and Timepoint < '24 Jul 2020' then 1004.22
 			else 1001.03
 		end Value 
+	from timeline union all 
+	select
+		4 CurveID, Timepoint, 
+		case 
+			when Timepoint < '10 Mar 2020' then 1124.110 
+			when Timepoint >= '10 Mar 2020' and Timepoint < '12 Apr 2020' then 1002.09
+			when Timepoint >= '12 Apr 2020' and Timepoint < '22 May 2020' then 1003.11
+			when Timepoint >= '22 May 2020' and Timepoint < '24 Jul 2020' then 1005.89
+			else 1003.02
+		end Value 
 	from timeline 
 ), t as 
 (
-	select * from Arbitrage.CurveValue where CurveID = 2 
+	select * from Arbitrage.CurveValue where CurveID in (select distinct CurveID from s)  
 ) 
 merge t t using s s on t.CurveID = s.CurveID and t.Timepoint = s.Timepoint 
 when not matched by target then insert (CurveID, Timepoint, Value) values (s.CurveID, s.Timepoint, s.Value) 
 when not matched by source then delete 
 when matched and t.Value <> s.Value or (t.Value is null and s.Value is not null) or (t.Value is not null and s.Value is null) then update set t.Value = s.Value
-option (maxrecursion 0); 
+option (maxrecursion 0);
 
 --Item sample set 
 ;with s as 
@@ -256,7 +279,8 @@ when not matched by source then delete;
 --ItemPriceCurve
 ;with s as 
 (
-	select 1 ItemID, 2 CurveID, 1 PriceSourceID
+	select 1 ItemID, 2 CurveID, 1 PriceSourceID union all 
+	select 1 ItemID, 4 CurveID, 3 PriceSourceID 
 ) 
 merge Arbitrage.ItemPriceCurve t using s s on t.ItemID = s.ItemID and t.CurveID = s.CurveID and t.PriceSourceID = s.PriceSourceID 
 when not matched by target then insert (ItemID, CurveID, PriceSourceID) values (s.ItemID, s.CurveID, s.PriceSourceID) 

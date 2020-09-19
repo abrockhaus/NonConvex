@@ -66,9 +66,11 @@
     <Build Include="Arbitrage\CurveValue.sql" />
     <Build Include="Arbitrage\Curve.sql" />
     <Build Include="Arbitrage\ItemPriceCurve.sql" />
+    <Build Include="Arbitrage\pReportingGetCurveValues.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Optimization.dev.publish.xml" />
+    <None Include="DEVLocalToProject.scmp" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Optimization.refactorlog" />

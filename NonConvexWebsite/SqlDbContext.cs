@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NonConvexWebsite.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +13,7 @@ namespace NonConvexWebsite
         public SqlDbContext(DbContextOptions<SqlDbContext> options) : base(options)
         {
         }
+        public DbSet<Employee> Employees { get; set; }
         public DataSet GetDs(string cmd)
         {
             DataSet ds = new DataSet();
