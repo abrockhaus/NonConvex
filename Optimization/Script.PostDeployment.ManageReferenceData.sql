@@ -13,8 +13,8 @@ Vorlage für ein Skript nach der Bereitstellung
 --Price Sources
 ;with s as 
 (
-    select 1 ID, 'Some Webshop' Label union all 
-	select 3 ID, 'Local Store' Label
+    select 1 ID, 'Rotterdam' Label union all 
+	select 3 ID, 'Hamburg' Label
 ) 
 merge Arbitrage.PriceSource t using s on t.ID = s.ID 
 when not matched by target then 
@@ -27,8 +27,8 @@ when not matched by source then delete;
 ;with s as 
 (
     select 1 ID, 'EUR/CHF' Label, 'EUR/CHF' Unit union all 
-	select 2 ID, 'DJI Mavic Air 2 Drone mit einer 4K Videokamera' Label, 'EUR/Item' Unit union all 
-	select 4 ID, 'DJI Mavic Air 2 Drone mit einer 4K Videokamera' Label, 'EUR/Item' Unit 
+	select 2 ID, 'FY21 FOB' Label, 'EUR/Item' Unit union all 
+	select 4 ID, 'FY21 FOB' Label, 'EUR/Item' Unit 
 ) 
 merge Arbitrage.Curve t using s on t.ID = s.ID 
 when not matched by target then 
@@ -269,7 +269,7 @@ option (maxrecursion 0);
 --Item sample set 
 ;with s as 
 (
-	select 1 ID, 'DJI Mavic Air 2 Drone mit einer 4K Videokamera' Label
+	select 1 ID, 'FY21 FOB' Label
 ) 
 merge Arbitrage.Item t using s s on t.ID = s.ID 
 when not matched by target then insert (ID, Label) values (s.ID, s.Label) 
